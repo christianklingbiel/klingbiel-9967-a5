@@ -1,0 +1,55 @@
+@startuml
+class InventoryTracker{
+    start()
+    main()
+}
+
+class SceneManager{
+    scenes:Map<String,Scene>
+
+    load()
+    getScene(String): Scene
+}
+
+class MainWindowController{
+    items: ItemModel
+    scenes: SceneManager
+
+    + MainWindowController(ItemModel, SceneManager)
+
+    addItemButtonClicked(EventHandler)
+    editItemButtonClicked(EventHandler)
+    removeItemButtonClicked(EventHandler)
+    saveInventoryAsCSVButtonClicked(EventHandler)
+    saveInventoryAsHTMLButtonClicked(EventHandler)
+    saveInventoryAsJSONButtonClicked(EventHandler)
+
+    addItem(String, String, BigDecimal)
+    editItem()
+
+    saveInventoryAsCSV(fileName: String)
+    saveInventoryAsHTML(fileName: String)
+    saveInventoryAsJSON(fileName: String)
+}
+
+class ItemModel{
+    - ObservableList<Item>
+}
+
+class Item{
+    - name: SimpleStringProperty
+    - serialNumber: SimpleStringProperty
+    - value: BigDecimal
+
+    + getName()
+    + setName()
+    + nameProperty()
+    + getSerialNumber()
+}
+
+openjfx.org.Application <|-- InventoryTracker
+InventoryTracker -- SceneManager
+SceneManager -- MainWindowController
+MainWindowController o-- ItemModel
+ItemModel *-- Item
+@enduml
