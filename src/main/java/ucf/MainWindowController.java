@@ -1,5 +1,8 @@
 package ucf;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -9,6 +12,8 @@ import javafx.stage.FileChooser;
 import javax.swing.text.TableView;
 
 public class MainWindowController {
+
+    private ObservableList<Item> observableList = FXCollections.observableArrayList();
     @FXML
     private TableView itemsTableView;
 
@@ -31,25 +36,25 @@ public class MainWindowController {
     private TextField itemSerialNumberTextField;
 
     @FXML
-    void addNewItemButtonClicked(ActionEvent event){
+    void addItemButtonClicked(ActionEvent event){
         String sn = itemSerialNumberTextField.getText();
         String name = itemNameTextField.getText();
         double value = Double.parseDouble(itemValueTextField.getText());
 
         Item item = addNewItem(sn, name, value);
 
-        ItemModel.add(item);
+        observableList.add(item);
     }
 
-    public void addNewItem(String sn, String name, double value){
+    public Item addNewItem(String sn, String name, double value){
         return new Item(sn, name, value);
     }
 
     void saveAsButtonClicked(ActionEvent event){
-        filename = FileChooser.getName();
-        filetype = FileChooser.getType();
+        SimpleStringProperty filename = FileChooser.getName();
+        SimpleStringProperty filetype = FileChooser.getType();
 
-        if(filetype == 'CSV'){
+        if(filetype.equals("CSV")){
             saveAsCSV(filename + filetype);
         }
     }
