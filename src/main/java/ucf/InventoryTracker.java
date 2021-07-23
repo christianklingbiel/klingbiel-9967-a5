@@ -8,6 +8,11 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/*
+ *  UCF COP3330 Summer 2021 Assignment 4 Solution
+ *  Copyright 2021 Christian Klingbiel
+ */
+
 public class InventoryTracker extends Application {
 
     public static void main(String[] args) {
@@ -16,15 +21,15 @@ public class InventoryTracker extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        try{
+        try {
             Parent root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
 
             Scene scene = new Scene(root);
 
-            primaryStage.getScene(scene);
-            primaryStage.setTitle("Inventory Tracker");
+            primaryStage.setScene(scene);
+            primaryStage.setTitle("ToDoList");
             primaryStage.show();
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

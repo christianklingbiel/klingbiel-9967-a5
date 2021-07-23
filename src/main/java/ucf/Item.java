@@ -1,14 +1,28 @@
 package ucf;
 
-import javafx.beans.property.SimpleStringProperty;
-
 import java.math.BigDecimal;
 
 public class Item {
-    public SimpleStringProperty name;
-    public SimpleStringProperty serialNumber;
+    public String name;
+    public String sn;
     public BigDecimal value;
 
-    public Item(String sn, String name, double value) {
+    public String getName() {
+        return name;
+    }
+
+    public String getSn() {
+        return sn;
+    }
+
+    public BigDecimal getValue() {
+        return value;
+    }
+
+    public Item(String sn, String name, BigDecimal value) {
+        //super();
+        this.sn = sn;
+        this.name = name;
+        this.value = value;
     }
 }

@@ -1,62 +1,87 @@
 package ucf;
 
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.stage.FileChooser;
+import javafx.scene.control.cell.PropertyValueFactory;
 
-import javax.swing.text.TableView;
+import java.math.BigDecimal;
 
 public class MainWindowController {
 
-    private ObservableList<Item> observableList = FXCollections.observableArrayList();
-    @FXML
-    private TableView itemsTableView;
+    public final ObservableList<Item> observableList = FXCollections.observableArrayList();
 
     @FXML
-    private TableColumn itemSerialNumberColumn;
+    public TableView<Item> itemsTableView;
 
     @FXML
-    private TableColumn itemNameColumn;
+    public TableColumn<Item, String> itemSerialNumberColumn;
 
     @FXML
-    private TableColumn itemValueColumn;
+    public TableColumn<Item, String> itemNameColumn;
 
     @FXML
-    private TextField itemNameTextField;
+    public TableColumn<Item, BigDecimal> itemValueColumn;
 
     @FXML
-    private TextField itemValueTextField;
+    public TextField itemNameTextField;
 
     @FXML
-    private TextField itemSerialNumberTextField;
+    public TextField itemValueTextField;
 
     @FXML
-    void addItemButtonClicked(ActionEvent event){
+    public TextField itemSerialNumberTextField;
+
+    @FXML
+    public TextField outputTextField;
+
+    @FXML
+    public void addItemButtonClicked(){
+        //get TextField data and assign it to a Item
         String sn = itemSerialNumberTextField.getText();
         String name = itemNameTextField.getText();
-        double value = Double.parseDouble(itemValueTextField.getText());
+        BigDecimal value = BigDecimal.valueOf(Double.parseDouble(itemValueTextField.getText()));
+        Item item = new Item(sn, name, value);
 
-        Item item = addNewItem(sn, name, value);
+        //add item to observable list
+        addNewItem(item);
+        if(observableList.contains(item))
+            outputTextField.setText("Item added successfully.");
+        else outputTextField.setText("Item wasn't added");
 
+        displayList();
+    }
+
+    public void addNewItem(Item item){
         observableList.add(item);
     }
 
-    public Item addNewItem(String sn, String name, double value){
-        return new Item(sn, name, value);
+    public void displayList(){
+        itemSerialNumberColumn.setCellValueFactory(new PropertyValueFactory<>("sn"));
+        itemNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        itemValueColumn.setCellValueFactory(new PropertyValueFactory<>("value"));
+
+        itemsTableView.setItems(observableList);
+    }
+
+    public boolean validateSN(){
+        if (itemSerialNumberTextField.getText().length() == 10){
+            return true;
+        }
+        else return false;
     }
 
     void saveAsButtonClicked(ActionEvent event){
-        SimpleStringProperty filename = FileChooser.getName();
-        SimpleStringProperty filetype = FileChooser.getType();
+        //SimpleStringProperty filename = FileChooser.getName();
+        //SimpleStringProperty filetype = FileChooser.getType();
 
-        if(filetype.equals("CSV")){
-            saveAsCSV(filename + filetype);
-        }
+        //if(filetype.equals("CSV")){
+            //saveAsCSV(filename + filetype);
+        //}
     }
 
     public void saveAsCSV(String filename){

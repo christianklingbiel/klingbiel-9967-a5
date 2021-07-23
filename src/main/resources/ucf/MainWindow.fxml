@@ -11,8 +11,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucf.MainWindowController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -40,7 +40,7 @@
       <TableView fx:id="itemsTableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <columns>
           <TableColumn fx:id="itemSerialNumberColumn" prefWidth="75.0" text="Serial Number" />
-          <TableColumn fx:id="itemNameCoulmn" prefWidth="75.0" text="Name" />
+          <TableColumn fx:id="itemNameColumn" prefWidth="75.0" text="Name" />
             <TableColumn fx:id="itemValueColumn" prefWidth="75.0" text="Value" />
         </columns>
       </TableView>
@@ -50,10 +50,15 @@
          <children>
             <HBox prefWidth="200.0">
                <children>
-                  <TextField promptText="Serial Number" />
-                  <TextField promptText="Name" />
-                  <TextField promptText="Value" />
-                  <Button fx:id="addItemButtonClicked" mnemonicParsing="false" text="Add Item" />
+                  <TextField fx:id="itemSerialNumberTextField" promptText="Serial Number" />
+                  <TextField fx:id="itemNameTextField" promptText="Name" />
+                  <TextField fx:id="itemValueTextField" promptText="Value" />
+                  <Button mnemonicParsing="false" onAction="#addItemButtonClicked" text="Add Item" />
+               </children>
+            </HBox>
+            <HBox prefWidth="200.0">
+               <children>
+                  <TextField fx:id="outputTextField" editable="false" promptText="Output" />
                </children>
             </HBox>
          </children>
