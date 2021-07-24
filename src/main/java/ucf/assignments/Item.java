@@ -1,4 +1,4 @@
-package ucf;
+package ucf.assignments;
 
 import java.math.BigDecimal;
 

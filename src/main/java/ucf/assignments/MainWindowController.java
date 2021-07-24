@@ -1,4 +1,4 @@
-package ucf;
+package ucf.assignments;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -48,10 +48,11 @@ public class MainWindowController {
         Item item = new Item(sn, name, value);
 
         //add item to observable list
-        addNewItem(item);
-        if(observableList.contains(item))
+        if (validateName() && validateSN() && validateValue()){
+            addNewItem(item);
             outputTextField.setText("Item added successfully.");
-        else outputTextField.setText("Item wasn't added");
+        }
+        else outputTextField.setText("Check the credentials.");
 
         displayList();
     }
@@ -69,18 +70,44 @@ public class MainWindowController {
     }
 
     public boolean validateSN(){
-        if (itemSerialNumberTextField.getText().length() == 10){
+        if (itemSerialNumberTextField.getText().length() == 10 && validateLetterOrDigit() && validateListDoesNotContainSN())
+            return true;
+        else return false;
+    }
+    public boolean validateListDoesNotContainSN(){
+        for (int i = 0;i < observableList.size();i++){
+            if (observableList.get(i).sn.equalsIgnoreCase(itemSerialNumberTextField.getText()) == true)
+                return false;
+        }
+        return true;
+    }
+    public boolean validateName(){
+        String name = itemNameTextField.getText();
+        if (name.length() >= 2 && name.length() <= 256)
+            return true;
+        else return false;
+    }
+    public boolean validateLetterOrDigit(){
+        for (int i = 0;i < observableList.size();i++) {
+            if ((Character.isLetterOrDigit(itemSerialNumberTextField.getText().charAt(i)) == false))
+                return false;
+        }
+        return true;
+    }
+    public boolean validateValue(){
+        if (BigDecimal.valueOf(Double.parseDouble(itemValueTextField.getText())).compareTo(BigDecimal.valueOf(0.00)) == 1){
             return true;
         }
         else return false;
     }
+
 
     void saveAsButtonClicked(ActionEvent event){
         //SimpleStringProperty filename = FileChooser.getName();
         //SimpleStringProperty filetype = FileChooser.getType();
 
         //if(filetype.equals("CSV")){
-            //saveAsCSV(filename + filetype);
+        //saveAsCSV(filename + filetype);
         //}
     }
 
@@ -93,3 +120,4 @@ public class MainWindowController {
          */
     }
 }
+
