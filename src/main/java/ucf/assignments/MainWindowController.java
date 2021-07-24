@@ -37,6 +37,9 @@ public class MainWindowController {
     public TextField itemSerialNumberTextField;
 
     @FXML
+    public TextField newPropertyTextField;
+
+    @FXML
     public TextField outputTextField;
 
     @FXML
@@ -49,7 +52,7 @@ public class MainWindowController {
 
         //add item to observable list
         if (validateName() && validateSN() && validateValue()){
-            addNewItem(item);
+            addItem(item);
             outputTextField.setText("Item added successfully.");
         }
         else outputTextField.setText("Check the credentials.");
@@ -57,8 +60,57 @@ public class MainWindowController {
         displayList();
     }
 
-    public void addNewItem(Item item){
+    @FXML
+    public void removeItemButtonClicked(){
+        //get TextField data and assign it to a Item
+        String sn = itemSerialNumberTextField.getText();
+        String name = itemNameTextField.getText();
+        BigDecimal value = BigDecimal.valueOf(Double.parseDouble(itemValueTextField.getText()));
+        Item item = new Item(sn, name, value);
+
+        for (int i = 0;i < observableList.size();i++) {
+            if (observableList.get(i).getSn().equals(item.getSn())) {
+                outputTextField.setText("Removed item successfully.");
+            }
+            else outputTextField.setText("Check your credentials.");
+        }
+
+        removeItem(item);
+
+        displayList();
+    }
+
+    @FXML
+    public void changeSNButtonClicked(){
+        String sn = itemSerialNumberTextField.getText();
+        String name = itemNameTextField.getText();
+        BigDecimal value = BigDecimal.valueOf(Double.parseDouble(itemValueTextField.getText()));
+        Item item = new Item(sn, name, value);
+
+        String newSN = newPropertyTextField.getText();
+    }
+
+    @FXML
+    public void changeNameButtonClicked(){
+
+    }
+
+    @FXML
+    public void changeValueButtonClicked(){
+
+    }
+
+    public void addItem(Item item){
         observableList.add(item);
+    }
+
+    public void removeItem(Item item){
+        for (int i = 0;i < observableList.size();i++) {
+            if (observableList.get(i).getSn().equals(item.getSn())) {
+                observableList.remove(i);
+                i--;
+            }
+        }
     }
 
     public void displayList(){

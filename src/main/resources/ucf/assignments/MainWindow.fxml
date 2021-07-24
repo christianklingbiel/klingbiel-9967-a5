@@ -53,14 +53,22 @@
                         <TextField fx:id="itemNameTextField" promptText="Name" />
                         <TextField fx:id="itemValueTextField" promptText="Value" />
                         <Button mnemonicParsing="false" onAction="#addItemButtonClicked" text="Add Item" />
-                  <Button mnemonicParsing="false" text="Remove Item" />
+                  <Button mnemonicParsing="false" onAction="#removeItemButtonClicked" text="Remove Item" />
                     </children>
                 </HBox>
                 <HBox prefWidth="200.0">
-                    <children>
-                        <TextField fx:id="outputTextField" editable="false" promptText="Output" />
-                    </children>
+               <children>
+                  <TextField fx:id="newPropertyTextField" prefHeight="25.0" prefWidth="315.0" promptText="New Serial Number, Name, or Value" />
+                  <Button mnemonicParsing="false" onAction="#changeSNButtonClicked" prefHeight="25.0" prefWidth="110.0" text="Change SN" />
+                  <Button mnemonicParsing="false" onAction="#changeNameButtonClicked" prefHeight="25.0" prefWidth="123.0" text="Change Name" />
+                  <Button mnemonicParsing="false" onAction="#changeValueButtonClicked" prefHeight="25.0" prefWidth="121.0" text="Change Value" />
+               </children>
                 </HBox>
+            <HBox prefWidth="200.0">
+               <children>
+                        <TextField fx:id="outputTextField" editable="false" prefHeight="25.0" prefWidth="297.0" promptText="Output" />
+               </children>
+            </HBox>
             </children>
         </VBox>
     </bottom>
