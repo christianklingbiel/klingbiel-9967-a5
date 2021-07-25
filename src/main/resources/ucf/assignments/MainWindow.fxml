@@ -38,9 +38,9 @@
     <center>
         <TableView fx:id="itemsTableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <columns>
-                <TableColumn fx:id="itemSerialNumberColumn" prefWidth="75.0" text="Serial Number" />
-                <TableColumn fx:id="itemNameColumn" prefWidth="75.0" text="Name" />
-                <TableColumn fx:id="itemValueColumn" prefWidth="75.0" text="Value" />
+                <TableColumn fx:id="itemSerialNumberColumn" prefWidth="89.99999749660492" text="Serial Number" />
+                <TableColumn fx:id="itemNameColumn" prefWidth="85.33338165283203" text="Name" />
+                <TableColumn fx:id="itemValueColumn" prefWidth="78.6666259765625" text="Value" />
             </columns>
         </TableView>
     </center>
@@ -66,7 +66,10 @@
                 </HBox>
             <HBox prefWidth="200.0">
                <children>
-                        <TextField fx:id="outputTextField" editable="false" prefHeight="25.0" prefWidth="297.0" promptText="Output" />
+                        <TextField fx:id="outputTextField" editable="false" prefHeight="25.0" prefWidth="305.0" promptText="Output" />
+                  <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="95.0" text="Sort By SN" />
+                  <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="112.0" text="Sort By Name" />
+                  <Button mnemonicParsing="false" onAction="#sortByValueButtonClicked" prefHeight="25.0" prefWidth="113.0" text="Sort By Value" />
                </children>
             </HBox>
             </children>

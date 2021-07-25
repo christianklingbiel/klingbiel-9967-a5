@@ -2,7 +2,6 @@ package ucf.assignments;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -13,7 +12,7 @@ import java.math.BigDecimal;
 
 public class MainWindowController {
 
-    public final ObservableList<Item> observableList = FXCollections.observableArrayList();
+    public ObservableList<Item> observableList = FXCollections.observableArrayList();
 
     @FXML
     public TableView<Item> itemsTableView;
@@ -51,13 +50,13 @@ public class MainWindowController {
         Item item = new Item(sn, name, value);
 
         //add item to observable list
-        if (validateName() && validateSN() && validateValue()){
+        if (validateName(itemNameTextField) && validateSN(itemSerialNumberTextField) && validateValue(itemValueTextField)){
             addItem(item);
             outputTextField.setText("Item added successfully.");
         }
         else outputTextField.setText("Check the credentials.");
 
-        displayList();
+        displayList(observableList);
     }
 
     @FXML
@@ -68,16 +67,15 @@ public class MainWindowController {
         BigDecimal value = BigDecimal.valueOf(Double.parseDouble(itemValueTextField.getText()));
         Item item = new Item(sn, name, value);
 
-        for (int i = 0;i < observableList.size();i++) {
-            if (observableList.get(i).getSn().equals(item.getSn())) {
+        for (Item element : observableList) {
+            if (element.getSn().equals(item.getSn())) {
                 outputTextField.setText("Removed item successfully.");
-            }
-            else outputTextField.setText("Check your credentials.");
+            } else outputTextField.setText("Check your credentials.");
         }
 
-        removeItem(item);
+        removeItem(observableList, item);
 
-        displayList();
+        displayList(observableList);
     }
 
     @FXML
@@ -88,73 +86,171 @@ public class MainWindowController {
         Item item = new Item(sn, name, value);
 
         String newSN = newPropertyTextField.getText();
+
+        for (Item element : observableList) {
+            if (sn.equalsIgnoreCase(element.getSn())) {
+                if (validateSN(newPropertyTextField)) {
+                    changeSN(newSN, item);
+                    outputTextField.setText("Successfully changed item serial number.");
+                } else outputTextField.setText("Make sure the new serial number meets credentials. ");
+            } else outputTextField.setText("Check the credentials.");
+        }
+
+        displayList(observableList);
     }
 
     @FXML
     public void changeNameButtonClicked(){
+        String sn = itemSerialNumberTextField.getText();
+        String name = itemNameTextField.getText();
+        BigDecimal value = BigDecimal.valueOf(Double.parseDouble(itemValueTextField.getText()));
+        Item item = new Item(sn, name, value);
 
+        String newName = newPropertyTextField.getText();
+
+        for (Item element : observableList) {
+            if (sn.equalsIgnoreCase(element.getSn())) {
+                if (validateName(newPropertyTextField)) {
+                    changeName(newName, item);
+                    outputTextField.setText("Successfully changed item name.");
+                } else outputTextField.setText("Make sure the new name meets credentials.");
+            } else outputTextField.setText("Check the credentials.");
+        }
+
+        displayList(observableList);
     }
 
     @FXML
     public void changeValueButtonClicked(){
 
+        String sn = itemSerialNumberTextField.getText();
+        String name = itemNameTextField.getText();
+        BigDecimal value = BigDecimal.valueOf(Double.parseDouble(itemValueTextField.getText()));
+        Item item = new Item(sn, name, value);
+
+        BigDecimal newValue = BigDecimal.valueOf(Double.parseDouble(newPropertyTextField.getText()));
+
+        for (Item element : observableList) {
+            if (sn.equalsIgnoreCase(element.getSn())) {
+                if (validateValue(newPropertyTextField)) {
+                    changeValue(newValue, item);
+                    outputTextField.setText("Successfully changed item value.");
+                } else outputTextField.setText("Make sure the new value meets credentials. ");
+            } else outputTextField.setText("Check the credentials.");
+        }
+
+        displayList(observableList);
+    }
+    @FXML
+    public void sortByValueButtonClicked(){
+        /*
+        ObservableList<Item> tempObservableList = observableList;
+        ObservableList<Item> sortedObservableList = FXCollections.observableArrayList();
+
+        for (int i = 0; i < observableList.size();i++){
+            sortedObservableList.add(getBiggestValue(tempObservableList));
+        }
+
+        displayList(sortedObservableList);
+
+         */
+        ObservableList<Item> sortedObservableList = FXCollections.observableArrayList();
+        int observableListSize = observableList.size();
+        for(int i = 0;i < observableListSize;i++){
+            sortedObservableList.add(getBiggestValueItem());
+        }
+
+        observableList = sortedObservableList;
+
+        displayList(observableList);
+
+    }
+
+    public Item getBiggestValueItem(){
+        BigDecimal max = BigDecimal.valueOf(0);
+        Item maxValueItem = new Item("","",max);
+        for (int i = 0;i < observableList.size();i++){
+            if (observableList.get(i).value.compareTo(max) > 0){
+                max = observableList.get(i).value;
+            }
+        }
+        for (int i = 0;i < observableList.size();i++){
+            if (observableList.get(i).value.compareTo(max) == 0){
+                maxValueItem = observableList.get(i);
+                removeItem(observableList, observableList.get(i));
+                i--;
+            }
+        }
+        return maxValueItem;
     }
 
     public void addItem(Item item){
         observableList.add(item);
     }
 
-    public void removeItem(Item item){
-        for (int i = 0;i < observableList.size();i++) {
-            if (observableList.get(i).getSn().equals(item.getSn())) {
-                observableList.remove(i);
+    public void removeItem(ObservableList<Item> list, Item item){
+        for (int i = 0;i < list.size();i++) {
+            if (list.get(i).getSn().equals(item.getSn())) {
+                list.remove(i);
                 i--;
             }
         }
     }
 
-    public void displayList(){
+    public void displayList(ObservableList<Item> list){
         itemSerialNumberColumn.setCellValueFactory(new PropertyValueFactory<>("sn"));
         itemNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         itemValueColumn.setCellValueFactory(new PropertyValueFactory<>("value"));
 
-        itemsTableView.setItems(observableList);
+        itemsTableView.setItems(list);
     }
 
-    public boolean validateSN(){
-        if (itemSerialNumberTextField.getText().length() == 10 && validateLetterOrDigit() && validateListDoesNotContainSN())
-            return true;
-        else return false;
+    public boolean validateSN(TextField t){
+        return t.getText().length() == 10
+                && validateLetterOrDigit(t)
+                && validateListDoesNotContainSN(t);
     }
-    public boolean validateListDoesNotContainSN(){
-        for (int i = 0;i < observableList.size();i++){
-            if (observableList.get(i).sn.equalsIgnoreCase(itemSerialNumberTextField.getText()) == true)
+    public boolean validateListDoesNotContainSN(TextField t){
+        for (Item item : observableList) {
+            if (item.sn.equalsIgnoreCase(t.getText()))
                 return false;
         }
         return true;
     }
-    public boolean validateName(){
-        String name = itemNameTextField.getText();
-        if (name.length() >= 2 && name.length() <= 256)
-            return true;
-        else return false;
+    public boolean validateName(TextField t){
+        String name = t.getText();
+        return name.length() >= 2 && name.length() <= 256;
     }
-    public boolean validateLetterOrDigit(){
+    public boolean validateLetterOrDigit(TextField t){
         for (int i = 0;i < observableList.size();i++) {
-            if ((Character.isLetterOrDigit(itemSerialNumberTextField.getText().charAt(i)) == false))
+            if ((!Character.isLetterOrDigit(t.getText().charAt(i))))
                 return false;
         }
         return true;
     }
-    public boolean validateValue(){
-        if (BigDecimal.valueOf(Double.parseDouble(itemValueTextField.getText())).compareTo(BigDecimal.valueOf(0.00)) == 1){
-            return true;
-        }
-        else return false;
+    public boolean validateValue(TextField t){
+        return BigDecimal.valueOf(Double.parseDouble(t.getText())).compareTo(BigDecimal.valueOf(0.00)) > 0;
+    }
+    public void changeSN(String newSN, Item item){
+        removeItem(observableList, item);
+        Item itemTemp = new Item(newSN, item.getName(), item.getValue());
+        addItem(itemTemp);
+    }
+
+    public void changeName(String newName, Item item){
+        removeItem(observableList, item);
+        Item itemTemp = new Item(item.getSn(), newName, item.getValue());
+        addItem(itemTemp);
+    }
+
+    public void changeValue(BigDecimal newValue, Item item){
+        removeItem(observableList, item);
+        Item itemTemp = new Item(item.getSn(), item.getName(), newValue);
+        addItem(itemTemp);
     }
 
 
-    void saveAsButtonClicked(ActionEvent event){
+    void saveAsButtonClicked(){
         //SimpleStringProperty filename = FileChooser.getName();
         //SimpleStringProperty filetype = FileChooser.getType();
 
