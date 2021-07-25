@@ -18,7 +18,7 @@
                 <Menu mnemonicParsing="false" text="File">
                     <items>
                         <MenuItem mnemonicParsing="false" text="Load..." />
-                        <MenuItem mnemonicParsing="false" text="Save As..." />
+                        <MenuItem mnemonicParsing="false" onAction="#saveAsMenuItemAction" text="Save As..." />
                         <MenuItem mnemonicParsing="false" text="Quit" />
                     </items>
                 </Menu>
@@ -66,13 +66,26 @@
                 </HBox>
             <HBox prefWidth="200.0">
                <children>
-                        <TextField fx:id="outputTextField" editable="false" prefHeight="25.0" prefWidth="305.0" promptText="Output" />
-                  <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="95.0" text="Sort By SN" />
-                  <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="112.0" text="Sort By Name" />
-                  <Button mnemonicParsing="false" onAction="#sortByValueButtonClicked" prefHeight="25.0" prefWidth="113.0" text="Sort By Value" />
+                  <TextField fx:id="searchTextField" prefHeight="25.0" prefWidth="299.0" promptText="Search" />
+                  <Button mnemonicParsing="false" onAction="#searchBySerialNumberButtonClicked" prefHeight="25.0" prefWidth="174.0" text="Search By Serial Number" />
+                  <Button mnemonicParsing="false" onAction="#searchByNameButtonClicked" prefHeight="25.0" prefWidth="127.0" text="Search By Name" />
                </children>
             </HBox>
             </children>
         </VBox>
     </bottom>
+   <right>
+      <HBox prefHeight="299.0" prefWidth="122.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox prefHeight="299.0" prefWidth="137.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#sortByNameButtonClicked" prefHeight="25.0" prefWidth="133.0" text="Sort By Name" />
+                  <Button mnemonicParsing="false" onAction="#sortBySNButtonClicked" prefHeight="25.0" prefWidth="146.0" text="Sort By SN" />
+                  <Button mnemonicParsing="false" onAction="#sortByValueButtonClicked" prefHeight="25.0" prefWidth="134.0" text="Sort By Value" />
+                        <TextField fx:id="outputTextField" editable="false" prefHeight="25.0" prefWidth="305.0" promptText="Output" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </right>
 </BorderPane>

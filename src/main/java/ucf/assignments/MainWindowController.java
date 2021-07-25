@@ -3,11 +3,12 @@ package ucf.assignments;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 
+import java.io.File;
 import java.math.BigDecimal;
 
 public class MainWindowController {
@@ -42,6 +43,9 @@ public class MainWindowController {
     public TextField outputTextField;
 
     @FXML
+    public TextField searchTextField;
+
+    @FXML
     public void addItemButtonClicked(){
         //get TextField data and assign it to a Item
         String sn = itemSerialNumberTextField.getText();
@@ -52,9 +56,9 @@ public class MainWindowController {
         //add item to observable list
         if (validateName(itemNameTextField) && validateSN(itemSerialNumberTextField) && validateValue(itemValueTextField)){
             addItem(item);
-            outputTextField.setText("Item added successfully.");
+            outputTextField.setText("Added item");
         }
-        else outputTextField.setText("Check the credentials.");
+        else outputTextField.setText("Check inputs");
 
         displayList(observableList);
     }
@@ -69,8 +73,8 @@ public class MainWindowController {
 
         for (Item element : observableList) {
             if (element.getSn().equals(item.getSn())) {
-                outputTextField.setText("Removed item successfully.");
-            } else outputTextField.setText("Check your credentials.");
+                outputTextField.setText("Removed item");
+            } else outputTextField.setText("Check input");
         }
 
         removeItem(observableList, item);
@@ -91,9 +95,9 @@ public class MainWindowController {
             if (sn.equalsIgnoreCase(element.getSn())) {
                 if (validateSN(newPropertyTextField)) {
                     changeSN(newSN, item);
-                    outputTextField.setText("Successfully changed item serial number.");
-                } else outputTextField.setText("Make sure the new serial number meets credentials. ");
-            } else outputTextField.setText("Check the credentials.");
+                    outputTextField.setText("Changed Item SN");
+                } else outputTextField.setText("Check input");
+            } else outputTextField.setText("Check input");
         }
 
         displayList(observableList);
@@ -112,9 +116,9 @@ public class MainWindowController {
             if (sn.equalsIgnoreCase(element.getSn())) {
                 if (validateName(newPropertyTextField)) {
                     changeName(newName, item);
-                    outputTextField.setText("Successfully changed item name.");
-                } else outputTextField.setText("Make sure the new name meets credentials.");
-            } else outputTextField.setText("Check the credentials.");
+                    outputTextField.setText("Changed item name");
+                } else outputTextField.setText("Check input");
+            } else outputTextField.setText("Check input");
         }
 
         displayList(observableList);
@@ -134,26 +138,16 @@ public class MainWindowController {
             if (sn.equalsIgnoreCase(element.getSn())) {
                 if (validateValue(newPropertyTextField)) {
                     changeValue(newValue, item);
-                    outputTextField.setText("Successfully changed item value.");
-                } else outputTextField.setText("Make sure the new value meets credentials. ");
-            } else outputTextField.setText("Check the credentials.");
+                    outputTextField.setText("Changed item value");
+                } else outputTextField.setText("Check input");
+            } else outputTextField.setText("Check input");
         }
 
         displayList(observableList);
     }
+
     @FXML
     public void sortByValueButtonClicked(){
-        /*
-        ObservableList<Item> tempObservableList = observableList;
-        ObservableList<Item> sortedObservableList = FXCollections.observableArrayList();
-
-        for (int i = 0; i < observableList.size();i++){
-            sortedObservableList.add(getBiggestValue(tempObservableList));
-        }
-
-        displayList(sortedObservableList);
-
-         */
         ObservableList<Item> sortedObservableList = FXCollections.observableArrayList();
         int observableListSize = observableList.size();
         for(int i = 0;i < observableListSize;i++){
@@ -164,6 +158,78 @@ public class MainWindowController {
 
         displayList(observableList);
 
+        outputTextField.setText("Sorted by value");
+
+    }
+
+    @FXML
+    public void sortBySNButtonClicked(){
+        ObservableList<Item> sortedObservableList = FXCollections.observableArrayList();
+        int observableListSize = observableList.size();
+        for(int i = 0;i < observableListSize;i++){
+            sortedObservableList.add(getSNItem());
+        }
+
+        observableList = sortedObservableList;
+
+        displayList(observableList);
+
+        outputTextField.setText("Sorted by SN");
+
+    }
+
+    @FXML
+    public void sortByNameButtonClicked(){
+        ObservableList<Item> sortedObservableList = FXCollections.observableArrayList();
+        int observableListSize = observableList.size();
+        for(int i = 0;i < observableListSize;i++){
+            sortedObservableList.add(getNameItem());
+        }
+
+        observableList = sortedObservableList;
+
+        displayList(observableList);
+
+        outputTextField.setText("Sorted by name");
+
+    }
+
+    @FXML
+    public void searchBySerialNumberButtonClicked(){
+        ObservableList<Item> newSearchList = FXCollections.observableArrayList();
+        for (int i = 0;i < observableList.size();i++){
+            if (observableList.get(i).getSn().contains(searchTextField.getText())){
+                newSearchList.add(observableList.get(i));
+            }
+        }
+        displayList(newSearchList);
+    }
+
+    @FXML
+    public void searchByNameButtonClicked(){
+        ObservableList<Item> newSearchList = FXCollections.observableArrayList();
+        for (int i = 0;i < observableList.size();i++){
+            if (observableList.get(i).getName().contains(searchTextField.getText())){
+                newSearchList.add(observableList.get(i));
+            }
+        }
+        displayList(newSearchList);
+    }
+
+    @FXML
+    public void saveAsMenuItemAction(){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select a folder to place the new save");
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("TSV, HTML, or JSON","*.txt","*.html","*.json"));
+
+
+        File selectedFile = fileChooser.showOpenDialog(null);
+
+        if (selectedFile != null){
+            fileChooser.showSaveDialog(null);
+        }else{
+            System.out.println("file is not valid");
+        }
     }
 
     public Item getBiggestValueItem(){
@@ -182,6 +248,42 @@ public class MainWindowController {
             }
         }
         return maxValueItem;
+    }
+
+    public Item getSNItem(){
+        String priority = "";
+        Item priorityItem = new Item(priority,"",BigDecimal.valueOf(0));
+        for (int i = 0;i < observableList.size();i++){
+            if (observableList.get(i).sn.compareToIgnoreCase(priority) > 0){
+                priority = observableList.get(i).sn;
+            }
+        }
+        for (int i = 0;i < observableList.size();i++){
+            if (observableList.get(i).sn.compareToIgnoreCase(priority) == 0){
+                priorityItem = observableList.get(i);
+                removeItem(observableList, observableList.get(i));
+                i--;
+            }
+        }
+        return priorityItem;
+    }
+
+    public Item getNameItem(){
+        String priority = "";
+        Item priorityItem = new Item("",priority,BigDecimal.valueOf(0));
+        for (int i = 0;i < observableList.size();i++){
+            if (observableList.get(i).name.compareToIgnoreCase(priority) > 0){
+                priority = observableList.get(i).name;
+            }
+        }
+        for (int i = 0;i < observableList.size();i++){
+            if (observableList.get(i).name.compareToIgnoreCase(priority) == 0){
+                priorityItem = observableList.get(i);
+                removeItem(observableList, observableList.get(i));
+                i--;
+            }
+        }
+        return priorityItem;
     }
 
     public void addItem(Item item){
