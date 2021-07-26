@@ -27,7 +27,7 @@ public class InventoryTracker extends Application {
             Scene scene = new Scene(root);
 
             primaryStage.setScene(scene);
-            primaryStage.setTitle("ToDoList");
+            primaryStage.setTitle("Inventory Tracker");
             primaryStage.show();
         } catch (IOException e) {
             e.printStackTrace();
