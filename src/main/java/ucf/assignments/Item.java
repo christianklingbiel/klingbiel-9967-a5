@@ -20,7 +20,6 @@ public class Item {
     }
 
     public Item(String sn, String name, BigDecimal value) {
-        //super();
         this.sn = sn;
         this.name = name;
         this.value = value;

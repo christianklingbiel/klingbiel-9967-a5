@@ -12,36 +12,69 @@ class SceneManager{
 }
 
 class MainWindowController{
-    items: ItemModel
+    item: Item
     scenes: SceneManager
 
-    + MainWindowController(ItemModel, SceneManager)
+    + MainWindowController(Item, SceneManager)
 
-    addItemButtonClicked(EventHandler)
-    editItemButtonClicked(EventHandler)
-    removeItemButtonClicked(EventHandler)
-    saveInventoryAsCSVButtonClicked(EventHandler)
-    saveInventoryAsHTMLButtonClicked(EventHandler)
-    saveInventoryAsJSONButtonClicked(EventHandler)
+    + observableList: ObservableList<Item>
+    + itemsTableView: TableView<Item>
+    + itemsSerialNumberColumn: TableColumn<Item,String>
+    + itemsNameColumn: TableColumn<Item,String>
+    + itemsValueColumn: TableColumn<Item,String>
+    + itemNameTextField: TextField
+    + itemValueTextField: TextField
+    + itemSerialNumberTextField: TextField
+    + newPropertyTextField: TextField
+    + outputTextField: TextField
+    + searchTextField: TextField
 
-    addItem(String, String, BigDecimal)
-    editItem()
+    + addItemButtonClicked()
+    + removeItemButtonClicked()
+    + changeSNButtonClicked()
+    + changeNameButtonClicked()
+    + changeValueButtonClicked()
+    + sortByValueButtonClicked()
+    + sortBySNButtonClicked()
+    + sortByNameButtonClicked()
+    + searchBySerialNumberButtonClicked()
+    + searchByNameButtonClicked()
+    + saveAsMenuItemAction()
+    saveInventoryAsTSVButtonClicked()
+    saveInventoryAsHTMLButtonClicked()
+    saveInventoryAsJSONButtonClicked()
 
-    saveInventoryAsCSV(fileName: String)
-    saveInventoryAsHTML(fileName: String)
-    saveInventoryAsJSON(fileName: String)
+    + getBiggestValueItem(ObservableList<Item> list)
+    + getSNItem(ObservableList<Item> list)
+    + getNameItem(ObservableList<Item> list)
+    + addItem(Item item, ObservableList<Item> list)
+    + removeItem(ObservableList<Item> list, Item item)
+    + displayList(ObservableList<Item> list, TableColumn col1,
+        TableColumn col2, TableColumn col3, TableView<Item> tableView)
+    + validateSN(String t, ObservableList<Item> list)
+    + validateListDoesNotContainSN(String t, ObservableList<Item> list)
+    + validateName(String name)
+    + validateLetterOrDigit(String t, ObservableList<Item> list)
+    + validateValue(BigDecimal bigDecimal)
+    + changeSN(String newSN, Item item, ObservableList<Item> list)
+    + changeName(String newName, Item item)
+    + changeValue(BigDecimal newValue, Item item)
+    + saveAsButtonClicked()
+    + saveAsTSV(String filename)
+    + saveAsHTML(String filename)
+    + saveAsJSON(String filename)
 }
 
 
 class Item{
-    - name: SimpleStringProperty
-    - serialNumber: SimpleStringProperty
-    - value: BigDecimal
+    + name: String
+    + serialNumber: String
+    + value: BigDecimal
 
     + getName()
     + setName()
-    + nameProperty()
-    + getSerialNumber()
+    + getSN()
+    + Item(String sn, String name, BigDecimal value)
 }
 
 openjfx.org.Application <|-- InventoryTracker
