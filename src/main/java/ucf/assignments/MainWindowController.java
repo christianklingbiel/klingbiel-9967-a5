@@ -1,5 +1,10 @@
 package ucf.assignments;
 
+/*
+ *  UCF COP3330 Summer 2021 Assignment 5 Solution
+ *  Copyright 2021 Christian Klingbiel
+ */
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -127,7 +132,7 @@ public class MainWindowController {
         for (Item element : observableList) {
             if (sn.equalsIgnoreCase(element.getSn())) {
                 if (validateName(newName)) {
-                    changeName(newName, item);
+                    changeName(newName, item, observableList);
                     outputTextField.setText("Changed item name");
                 } else outputTextField.setText("Check input");
             } else outputTextField.setText("Check input");
@@ -152,7 +157,7 @@ public class MainWindowController {
         for (Item element : observableList) {
             if (sn.equalsIgnoreCase(element.getSn())) {
                 if (validateValue(value)) {
-                    changeValue(newValue, item);
+                    changeValue(newValue, item, observableList);
                     outputTextField.setText("Changed item value");
                 } else outputTextField.setText("Check input");
             } else outputTextField.setText("Check input");
@@ -255,7 +260,7 @@ public class MainWindowController {
         //create fileChooser and apply options to make it a TSV, HTML, or JSON
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select a folder to place the new save");
-        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("TSV, HTML, or JSON","*.txt","*.html","*.json"));
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("TSV, HTML, or JSON ","*.txt","*.html","*.json"));
 
         //get text from fileChooser and create a corresponding file and add data to it
         File selectedFile = fileChooser.showOpenDialog(null);
@@ -265,6 +270,15 @@ public class MainWindowController {
         }else{
             System.out.println("file is not valid");
         }
+    }
+
+    @FXML
+    public void loadMenuItemAction(){
+        //load a fileChooser
+
+        //get selected
+
+        //display on the TableView
     }
 
     public Item getBiggestValueItem(ObservableList<Item> list){
@@ -395,18 +409,18 @@ public class MainWindowController {
         addItem(itemTemp, list);
     }
 
-    public void changeName(String newName, Item item){
+    public void changeName(String newName, Item item, ObservableList<Item> list){
         //remove item from list, create new item with same serial number and value but different name,and add item back to list
-        removeItem(observableList, item);
+        removeItem(list, item);
         Item itemTemp = new Item(item.getSn(), newName, item.getValue());
-        addItem(itemTemp, observableList);
+        addItem(itemTemp, list);
     }
 
-    public void changeValue(BigDecimal newValue, Item item){
+    public void changeValue(BigDecimal newValue, Item item, ObservableList<Item> list){
         //remove item from list, create new item with same name and serial number but different value,and add item back to list
-        removeItem(observableList, item);
+        removeItem(list, item);
         Item itemTemp = new Item(item.getSn(), item.getName(), newValue);
-        addItem(itemTemp, observableList);
+        addItem(itemTemp, list);
     }
 
 

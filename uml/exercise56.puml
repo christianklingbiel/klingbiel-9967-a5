@@ -4,16 +4,8 @@ class InventoryTracker{
     main()
 }
 
-class SceneManager{
-    scenes:Map<String,Scene>
-
-    load()
-    getScene(String): Scene
-}
 
 class MainWindowController{
-    item: Item
-    scenes: SceneManager
 
     + MainWindowController(Item, SceneManager)
 
@@ -40,9 +32,7 @@ class MainWindowController{
     + searchBySerialNumberButtonClicked()
     + searchByNameButtonClicked()
     + saveAsMenuItemAction()
-    saveInventoryAsTSVButtonClicked()
-    saveInventoryAsHTMLButtonClicked()
-    saveInventoryAsJSONButtonClicked()
+    + loadMenuItemAction()
 
     + getBiggestValueItem(ObservableList<Item> list)
     + getSNItem(ObservableList<Item> list)
@@ -78,7 +68,6 @@ class Item{
 }
 
 openjfx.org.Application <|-- InventoryTracker
-InventoryTracker -- SceneManager
-SceneManager -- MainWindowController
+InventoryTracker -- MainWindowController
 MainWindowController o-- Item
 @enduml

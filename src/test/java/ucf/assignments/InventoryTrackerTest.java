@@ -1,10 +1,12 @@
 package ucf.assignments;
 
+/*
+ *  UCF COP3330 Summer 2021 Assignment 5 Solution
+ *  Copyright 2021 Christian Klingbiel
+ */
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -68,24 +70,6 @@ public class InventoryTrackerTest extends MainWindowController{
         assertEquals(getNameItem(list),item3);
     }
 
-    /*
-    @Test
-    void displayListTest(){
-        Item item = new Item("XXXXXXXXXX","inventoryItem", BigDecimal.valueOf(10));
-        ObservableList<Item> list1 = FXCollections.observableArrayList();
-        list1.add(item);
-        TableColumn<Item,String> col1 = new TableColumn<>();
-        TableColumn<Item,String> col2 = new TableColumn<>();
-        TableColumn<Item,BigDecimal> col3 = new TableColumn<>();
-        TableView<Item> tableView = new TableView<>();
-        tableView.getColumns().addAll(col1,col2,col3);
-        displayList(list1, col1, col2, col3, tableView);
-        ObservableList<Item> list2;
-        list2 = tableView.getItems();
-        assertEquals(list1,list2);
-    }
-     */
-
     @Test
     void validateSNTest(){
         String SN = "XXXXXXXXXX";
@@ -125,8 +109,29 @@ public class InventoryTrackerTest extends MainWindowController{
         Item item = new Item("XXXXXXXXXX","item",BigDecimal.valueOf(10));
         list.add(item);
         String newSN = "OOOOOOOOOO";
-        Item expectedItem = new Item("OOOOOOOOOO","item",BigDecimal.valueOf(10));
         changeSN(newSN,item,list);
-
+        assertEquals(list.get(0).getSn(),newSN);
     }
+
+    @Test
+    void changeNameTest(){
+        ObservableList<Item> list = FXCollections.observableArrayList();
+        Item item = new Item("XXXXXXXXXX","item",BigDecimal.valueOf(10));
+        list.add(item);
+        String newName = "itemX";
+        changeName(newName,item,list);
+        assertEquals(list.get(0).getName(),newName);
+    }
+
+    @Test
+    void changeValueTest(){
+        ObservableList<Item> list = FXCollections.observableArrayList();
+        Item item = new Item("XXXXXXXXXX","item",BigDecimal.valueOf(10));
+        list.add(item);
+        BigDecimal newValue = BigDecimal.valueOf(20);
+        changeValue(newValue,item,list);
+        assertEquals(list.get(0).getValue(),newValue);
+    }
+
+
 }
